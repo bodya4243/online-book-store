@@ -1,7 +1,11 @@
 package com.example.onlinebookstore.repository;
 
 import com.example.onlinebookstore.model.Book;
+
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -37,9 +41,10 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public List<Book> findAll() {
-        Session session = sessionFactory.openSession();
-        List<Book> books = session.createQuery("SELECT b FROM Book b", Book.class).getResultList();
-        session.close();
-        return books;
+        try (Session session = sessionFactory.openSession()) {
+            return session.createQuery("SELECT b FROM Book b", Book.class).getResultList();
+        } catch (Exception e) {
+            throw new RuntimeException("Can't get books", e);
+        }
     }
 }
