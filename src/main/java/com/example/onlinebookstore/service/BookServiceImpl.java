@@ -20,8 +20,6 @@ public class BookServiceImpl implements BookService {
     @Override
     public BookDto save(CreateBookRequestDto bookDto) {
         Book book = bookMapper.toModel(bookDto);
-        book.setDescription("new description");
-        book.setIsbn("isbn");
         return bookMapper.toDto(bookRepository.save(book));
     }
     
