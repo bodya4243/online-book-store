@@ -12,15 +12,14 @@ databaseChangeLog:
                   autoIncrement: true
                   constraints:
                     primaryKey: true
-                    nullable: false
               - column:
                   name: title
-                  type: varchar(255)
+                  type: varchar(500)
                   constraints:
                     nullable: false
               - column:
                   name: author
-                  type: varchar(255)
+                  type: varchar(500)
                   constraints:
                     nullable: false
               - column:

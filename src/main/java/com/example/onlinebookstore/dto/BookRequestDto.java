@@ -6,11 +6,11 @@ import lombok.Data;
 @Data
 public class BookRequestDto {
     private String title;
-    
+
     private String author;
-    
+
     private BigDecimal price;
-    
+
     private String isbn;
     
     private String description;
