@@ -28,12 +28,13 @@ public class BookController {
     }
     
     @GetMapping("/{id}")
-    public BookDto getBookById(@PathVariable Long id) {
+    public BookDto getById(@PathVariable Long id) {
         return bookService.findById(id);
     }
     
     @PostMapping
-    public BookDto createBook(@RequestBody BookRequestDto bookRequestDto) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public BookDto create(@RequestBody BookRequestDto bookRequestDto) {
         return bookService.save(bookRequestDto);
     }
     
@@ -44,7 +45,7 @@ public class BookController {
     }
 
     @PutMapping("/{id}")
-    public BookDto updateBook(@PathVariable Long id,@RequestBody BookRequestDto bookRequestDto) {
+    public BookDto update(@PathVariable Long id, @RequestBody BookRequestDto bookRequestDto) {
         return bookService.updateById(id, bookRequestDto);
     }
 }
