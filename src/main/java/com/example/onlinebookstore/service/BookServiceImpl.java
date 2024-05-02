@@ -1,7 +1,7 @@
 package com.example.onlinebookstore.service;
 
 import com.example.onlinebookstore.dto.BookDto;
-import com.example.onlinebookstore.dto.CreateBookRequestDto;
+import com.example.onlinebookstore.dto.BookRequestDto;
 import com.example.onlinebookstore.exception.EntityNotFoundException;
 import com.example.onlinebookstore.mapper.BookMapper;
 import com.example.onlinebookstore.model.Book;
@@ -18,7 +18,7 @@ public class BookServiceImpl implements BookService {
     private final BookMapper bookMapper;
     
     @Override
-    public BookDto save(CreateBookRequestDto bookDto) {
+    public BookDto save(BookRequestDto bookDto) {
         Book book = bookMapper.toModel(bookDto);
         return bookMapper.toDto(bookRepository.save(book));
     }
@@ -33,5 +33,25 @@ public class BookServiceImpl implements BookService {
         Book book = bookRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Can't get book by id" + id));
         return bookMapper.toDto(book);
+    }
+    
+    @Override
+    public void deleteById(Long id) {
+        verifyBookId(id);
+        bookRepository.deleteById(id);
+    }
+
+    @Override
+    public BookDto updateById(Long id, BookRequestDto bookDto) {
+        verifyBookId(id);
+        Book book = bookMapper.toModel(bookDto);
+        book.setId(id);
+        return bookMapper.toDto(bookRepository.save(book));
+    }
+
+    private void verifyBookId(Long id) {
+        if (!bookRepository.existsById(id)) {
+            throw new EntityNotFoundException("Can`t find a book with id: " + id);
+        }
     }
 }
