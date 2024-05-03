@@ -28,19 +28,21 @@ public class BookController {
     private final BookService bookService;
 
     @GetMapping
-    @Operation(summary = "get all Book", description = "get all the books")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Get all Books", description = "get all the books")
     public List<BookDto> getAll(Pageable pageable) {
         return bookService.getAll(pageable);
     }
 
     @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.FOUND)
     public BookDto getById(@PathVariable Long id) {
         return bookService.getById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @Operation(summary = "create Book", description = "create a new book")
+    @Operation(summary = "Create Book", description = "create a new book")
     public BookDto create(@RequestBody @Valid BookRequestDto bookRequestDto) {
         return bookService.save(bookRequestDto);
     }
