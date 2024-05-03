@@ -18,6 +18,10 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 @ControllerAdvice
 public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler {
+    private static final String STATUS = "status";
+    private static final String TIMESTAMP = "timestamp";
+    private static final String ERRORS = "errors";
+
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
             MethodArgumentNotValidException ex,
@@ -26,16 +30,28 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
             WebRequest request
     ) {
         Map<String, Object> body = new LinkedHashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("status", HttpStatus.BAD_REQUEST);
-
         List<String> errors = ex.getBindingResult().getAllErrors().stream()
                 .map(this::getErrorMessage)
                 .toList();
 
-        body.put("errors", errors);
-
+        buildErrorBody(HttpStatus.BAD_REQUEST, errors, body);
         return new ResponseEntity<>(body, headers, status);
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    protected ResponseEntity<Object> handleEntityNotFoundException(EntityNotFoundException ex) {
+        Map<String, Object> body = new LinkedHashMap<>();
+
+        buildErrorBody(HttpStatus.NOT_FOUND, List.of(ex.getMessage()), body);
+        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+    }
+
+    private void buildErrorBody(HttpStatus status,
+                                List<String> errors,
+                                Map<String, Object> body) {
+        body.put(TIMESTAMP, LocalDateTime.now());
+        body.put(STATUS, status);
+        body.put(ERRORS, errors);
     }
 
     private String getErrorMessage(ObjectError e) {
@@ -45,14 +61,5 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
             return field + " " + message;
         }
         return e.getDefaultMessage();
-    }
-
-    @ExceptionHandler(EntityNotFoundException.class)
-    protected ResponseEntity<Object> handleEntityNotFoundException(EntityNotFoundException ex) {
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("status", HttpStatus.NOT_FOUND);
-        body.put("message", ex.getMessage());
-        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 }
