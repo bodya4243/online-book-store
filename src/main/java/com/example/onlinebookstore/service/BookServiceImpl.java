@@ -8,6 +8,7 @@ import com.example.onlinebookstore.model.Book;
 import com.example.onlinebookstore.repository.BookRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,12 +25,12 @@ public class BookServiceImpl implements BookService {
     }
     
     @Override
-    public List<BookDto> findAll() {
-        return bookRepository.findAll().stream().map(bookMapper::toDto).toList();
+    public List<BookDto> getAll(Pageable pageable) {
+        return bookRepository.findAll(pageable).stream().map(bookMapper::toDto).toList();
     }
     
     @Override
-    public BookDto findById(Long id) {
+    public BookDto getById(Long id) {
         Book book = bookRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Can't get book by id" + id));
         return bookMapper.toDto(book);

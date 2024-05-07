@@ -3,13 +3,14 @@ package com.example.onlinebookstore.service;
 import com.example.onlinebookstore.dto.BookDto;
 import com.example.onlinebookstore.dto.BookRequestDto;
 import java.util.List;
+import org.springframework.data.domain.Pageable;
 
 public interface BookService {
     BookDto save(BookRequestDto bookDto);
     
-    List<BookDto> findAll();
+    List<BookDto> getAll(Pageable pageable);
     
-    BookDto findById(Long id);
+    BookDto getById(Long id);
     
     void deleteById(Long id);
 
