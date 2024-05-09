@@ -2,15 +2,15 @@ package com.example.onlinebookstore;
 
 import com.example.onlinebookstore.service.BookService;
 import com.example.onlinebookstore.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+@RequiredArgsConstructor
 @SpringBootApplication
 public class OnlineBookStoreApplication {
-    @Autowired
     private BookService bookService;
-    @Autowired
+
     private UserService userService;
     
     public static void main(String[] args) {
