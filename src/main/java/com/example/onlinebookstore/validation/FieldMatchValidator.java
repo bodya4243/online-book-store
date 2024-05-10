@@ -1,7 +1,6 @@
 package com.example.onlinebookstore.validation;
 
 import com.example.onlinebookstore.dto.UserRequestDto;
-import com.example.onlinebookstore.exception.RegistrationException;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import java.lang.reflect.Field;
@@ -23,7 +22,7 @@ public class FieldMatchValidator implements ConstraintValidator<FieldMatch, User
             field.setAccessible(true);
             return field.get(userRequestDto);
         } catch (NoSuchFieldException | IllegalAccessException e) {
-            throw new RegistrationException("can't find the appropriate field");
+            throw new IllegalArgumentException("can't find the appropriate field: " + fieldName);
         }
     }
 }

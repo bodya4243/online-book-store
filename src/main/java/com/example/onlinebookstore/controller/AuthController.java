@@ -2,6 +2,7 @@ package com.example.onlinebookstore.controller;
 
 import com.example.onlinebookstore.dto.UserDto;
 import com.example.onlinebookstore.dto.UserRequestDto;
+import com.example.onlinebookstore.exception.RegistrationException;
 import com.example.onlinebookstore.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,8 @@ public class AuthController {
 
     @PostMapping("/registration")
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDto registerUser(@RequestBody @Valid UserRequestDto requestDto) {
+    public UserDto registerUser(@RequestBody @Valid UserRequestDto requestDto)
+            throws RegistrationException {
         return userService.registerUser(requestDto);
     }
 }
