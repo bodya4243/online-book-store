@@ -9,7 +9,7 @@ public interface BookService {
     BookDto save(BookRequestDto bookDto);
     
     List<BookDto> getAll(Pageable pageable);
-    
+
     BookDto getById(Long id);
     
     void deleteById(Long id);

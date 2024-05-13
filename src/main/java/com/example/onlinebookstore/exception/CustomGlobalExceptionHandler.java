@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+@Log4j2
 @ControllerAdvice
 public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler {
     private static final String STATUS = "status";
@@ -40,6 +42,7 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<Object> handleException(Exception ex) {
+        log.error("error message", ex);
         return new ResponseEntity<>(getErrorBody(HttpStatus.INTERNAL_SERVER_ERROR,
                 ex.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
