@@ -49,18 +49,21 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 
     @ExceptionHandler(EntityNotFoundException.class)
     protected ResponseEntity<Object> handleEntityNotFoundException(EntityNotFoundException ex) {
+        log.error("error message", ex);
         return new ResponseEntity<>(getErrorBody(HttpStatus.NOT_FOUND,
                 ex.getMessage()), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(RegistrationException.class)
     protected ResponseEntity<Object> handleRegistrationException(RegistrationException ex) {
+        log.error("error message", ex);
         return new ResponseEntity<>(getErrorBody(HttpStatus.BAD_REQUEST,
                 ex.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
     protected ResponseEntity<Object> handleIllegalArgumentException(IllegalArgumentException ex) {
+        log.error("error message", ex);
         return new ResponseEntity<>(getErrorBody(HttpStatus.BAD_REQUEST,
                 ex.getMessage()), HttpStatus.BAD_REQUEST);
     }
