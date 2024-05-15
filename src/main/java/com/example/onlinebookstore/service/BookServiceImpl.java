@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
-    
     private final BookMapper bookMapper;
     
     @Override
@@ -23,12 +22,14 @@ public class BookServiceImpl implements BookService {
         Book book = bookMapper.toModel(bookDto);
         return bookMapper.toDto(bookRepository.save(book));
     }
-    
+
     @Override
     public List<BookDto> getAll(Pageable pageable) {
-        return bookRepository.findAll(pageable).stream().map(bookMapper::toDto).toList();
+        return bookRepository.findAll(pageable).stream()
+                .map(bookMapper::toDto)
+                .toList();
     }
-    
+
     @Override
     public BookDto getById(Long id) {
         Book book = bookRepository.findById(id)

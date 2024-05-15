@@ -1,0 +1,77 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert-books
+      author: bodya4243
+      changes:
+        - insert:
+            tableName: books
+            columns:
+              - column:
+                  name: title
+                  value: "Sample Book Title"
+              - column:
+                  name: author
+                  value: "Sample Author"
+              - column:
+                  name: isbn
+                  value: "1234567890123"
+              - column:
+                  name: price
+                  value: "29.99"
+              - column:
+                  name: description
+                  value: "Sample description of the book."
+              - column:
+                  name: cover_image
+                  value: "https://example.com/cover-image.jpg"
+              - column:
+                  name: is_deleted
+                  valueNumeric: 0
+        - insert:
+            tableName: books
+            columns:
+              - column:
+                  name: title
+                  value: "new Book Title"
+              - column:
+                  name: author
+                  value: "new Sample Author"
+              - column:
+                  name: isbn
+                  value: "1234567890124"
+              - column:
+                  name: price
+                  value: "29.99"
+              - column:
+                  name: description
+                  value: "new Sample description of the book."
+              - column:
+                  name: cover_image
+                  value: "https://example.com/cover-image.jpg"
+              - column:
+                  name: is_deleted
+                  valueNumeric: 0
+        - insert:
+            tableName: books
+            columns:
+              - column:
+                  name: title
+                  value: "new Book Title1"
+              - column:
+                  name: author
+                  value: "new Sample Author1"
+              - column:
+                  name: isbn
+                  value: "1234567890125"
+              - column:
+                  name: price
+                  value: "29.99"
+              - column:
+                  name: description
+                  value: "new Sample description of the book.1"
+              - column:
+                  name: cover_image
+                  value: "https://example.com/cover-image.jpg"
+              - column:
+                  name: is_deleted
+                  valueNumeric: 0
