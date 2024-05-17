@@ -1,7 +1,7 @@
 package com.example.onlinebookstore.controller;
 
-import com.example.onlinebookstore.dto.BookDto;
 import com.example.onlinebookstore.dto.BookRequestDto;
+import com.example.onlinebookstore.dto.BookResponseDto;
 import com.example.onlinebookstore.service.BookService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -32,14 +32,14 @@ public class BookController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get all Books", description = "get all the books")
-    public List<BookDto> getAll(Pageable pageable) {
+    public List<BookResponseDto> getAll(Pageable pageable) {
         return bookService.getAll(pageable);
     }
 
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.FOUND)
-    public BookDto getById(@PathVariable Long id) {
+    public BookResponseDto getById(@PathVariable Long id) {
         return bookService.getById(id);
     }
 
@@ -47,7 +47,7 @@ public class BookController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Create Book", description = "create a new book")
-    public BookDto create(@RequestBody @Valid BookRequestDto bookRequestDto) {
+    public BookResponseDto create(@RequestBody @Valid BookRequestDto bookRequestDto) {
         return bookService.save(bookRequestDto);
     }
 
@@ -61,8 +61,8 @@ public class BookController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public BookDto update(@PathVariable Long id,
-                          @RequestBody @Valid BookRequestDto bookRequestDto) {
+    public BookResponseDto update(@PathVariable Long id,
+                                  @RequestBody @Valid BookRequestDto bookRequestDto) {
         return bookService.updateById(id, bookRequestDto);
     }
 }

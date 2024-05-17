@@ -1,0 +1,53 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert_categories
+      author: your_name
+      changes:
+        - insert:
+            tableName: categories
+            columns:
+              - column:
+                  name: name
+                  value: Fiction
+              - column:
+                  name: description
+                  value: Fictional books
+              - column:
+                  name: is_deleted
+                  valueBoolean: false
+        - insert:
+            tableName: categories
+            columns:
+              - column:
+                  name: name
+                  value: Non-fiction
+              - column:
+                  name: description
+                  value: Non-fictional books
+              - column:
+                  name: is_deleted
+                  valueBoolean: false
+        - insert:
+            tableName: categories
+            columns:
+              - column:
+                  name: name
+                  value: Science
+              - column:
+                  name: description
+                  value: Scientific books
+              - column:
+                  name: is_deleted
+                  valueBoolean: false
+        - insert:
+            tableName: categories
+            columns:
+              - column:
+                  name: name
+                  value: Fantasy
+              - column:
+                  name: description
+                  value: Fantasy books
+              - column:
+                  name: is_deleted
+                  valueBoolean: false

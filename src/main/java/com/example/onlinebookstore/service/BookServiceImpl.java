@@ -1,7 +1,8 @@
 package com.example.onlinebookstore.service;
 
-import com.example.onlinebookstore.dto.BookDto;
+import com.example.onlinebookstore.dto.BookDtoWithoutCategoryIds;
 import com.example.onlinebookstore.dto.BookRequestDto;
+import com.example.onlinebookstore.dto.BookResponseDto;
 import com.example.onlinebookstore.exception.EntityNotFoundException;
 import com.example.onlinebookstore.mapper.BookMapper;
 import com.example.onlinebookstore.model.Book;
@@ -18,20 +19,20 @@ public class BookServiceImpl implements BookService {
     private final BookMapper bookMapper;
     
     @Override
-    public BookDto save(BookRequestDto bookDto) {
+    public BookResponseDto save(BookRequestDto bookDto) {
         Book book = bookMapper.toModel(bookDto);
         return bookMapper.toDto(bookRepository.save(book));
     }
 
     @Override
-    public List<BookDto> getAll(Pageable pageable) {
+    public List<BookResponseDto> getAll(Pageable pageable) {
         return bookRepository.findAll(pageable).stream()
                 .map(bookMapper::toDto)
                 .toList();
     }
 
     @Override
-    public BookDto getById(Long id) {
+    public BookResponseDto getById(Long id) {
         Book book = bookRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Can't get book by id" + id));
         return bookMapper.toDto(book);
@@ -44,11 +45,18 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public BookDto updateById(Long id, BookRequestDto bookDto) {
+    public BookResponseDto updateById(Long id, BookRequestDto bookDto) {
         verifyBookId(id);
         Book book = bookMapper.toModel(bookDto);
         book.setId(id);
         return bookMapper.toDto(bookRepository.save(book));
+    }
+
+    @Override
+    public List<BookDtoWithoutCategoryIds> getBooksByCategoryId(Long id) {
+        return bookRepository.findAllByCategoryId_Id(id).stream()
+                .map(bookMapper::toDtoWithoutCategories)
+                .toList();
     }
 
     private void verifyBookId(Long id) {
