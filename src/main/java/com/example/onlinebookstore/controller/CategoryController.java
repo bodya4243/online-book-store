@@ -73,5 +73,4 @@ public class CategoryController {
     public List<BookDtoWithoutCategoryIds> getBooksByCategoryId(@PathVariable Long id) {
         return bookService.getBooksByCategoryId(id);
     }
-
 }

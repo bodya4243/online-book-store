@@ -38,7 +38,7 @@ public class BookController {
 
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.FOUND)
+    @ResponseStatus(HttpStatus.OK)
     public BookResponseDto getById(@PathVariable Long id) {
         return bookService.getById(id);
     }

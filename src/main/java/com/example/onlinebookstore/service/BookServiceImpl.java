@@ -22,6 +22,7 @@ public class BookServiceImpl implements BookService {
     public BookResponseDto save(BookRequestDto bookDto) {
         Book book = bookMapper.toModel(bookDto);
         return bookMapper.toDto(bookRepository.save(book));
+
     }
 
     @Override
@@ -54,7 +55,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<BookDtoWithoutCategoryIds> getBooksByCategoryId(Long id) {
-        return bookRepository.findAllByCategoryId_Id(id).stream()
+        return bookRepository.findAllById(id).stream()
                 .map(bookMapper::toDtoWithoutCategories)
                 .toList();
     }
