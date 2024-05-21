@@ -6,7 +6,11 @@ databaseChangeLog:
   - include:
       file: db/changelog/changes/create-roles-table.yml
   - include:
+      file: db/changelog/changes/create-categories-table.yml
+  - include:
       file: db/changelog/changes/create-users-roles-table.yml
+  - include:
+      file: db/changelog/changes/create-books-categories-table.yml
   - include:
       file: db/changelog/changes/insert-users.yml
   - include:
@@ -15,4 +19,8 @@ databaseChangeLog:
       file: db/changelog/changes/insert-roles.yml
   - include:
       file: db/changelog/changes/insert-admin.yml
+  - include:
+      file: db/changelog/changes/insert-categories.yml
+  - include:
+      file: db/changelog/changes/insert-books-categories.yml
 
