@@ -16,7 +16,7 @@ import lombok.ToString;
 
 @Getter
 @Setter
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude = {"shoppingCart", "book"})
 @ToString(exclude = {"shoppingCart", "book"})
 @Table(name = "cart_items")
 @Entity

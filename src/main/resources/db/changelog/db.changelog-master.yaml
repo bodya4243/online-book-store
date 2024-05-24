@@ -8,13 +8,13 @@ databaseChangeLog:
   - include:
       file: db/changelog/changes/create-categories-table.yml
   - include:
-      file: db/changelog/changes/create-users-roles-table.yml
+      file: db/changelog/changes/create-users_roles-table.yml
   - include:
-      file: db/changelog/changes/create-books-categories-table.yml
+      file: db/changelog/changes/create-books_categories-table.yml
   - include:
-      file: db/changelog/changes/create-shoppingCart-table.yml
+      file: db/changelog/changes/create-shopping_cart-table.yml
   - include:
-      file: db/changelog/changes/create-cartItem-table.yml
+      file: db/changelog/changes/create-cart_items-table.yml
   - include:
       file: db/changelog/changes/insert-users.yml
   - include:
@@ -26,11 +26,8 @@ databaseChangeLog:
   - include:
       file: db/changelog/changes/insert-categories.yml
   - include:
-      file: db/changelog/changes/insert-books-categories.yml
+      file: db/changelog/changes/insert-books_categories.yml
   - include:
-      file: db/changelog/changes/insert-shoppingCart.yml
+      file: db/changelog/changes/insert-shopping_cart.yml
   - include:
-      file: db/changelog/changes/insert-cartItems.yml
-
-
-
+      file: db/changelog/changes/insert-cart_items.yml

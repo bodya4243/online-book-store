@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: create-cartItem-table
+      id: create-cart_items-table
       author: bodya4243
       changes:
         - createTable:

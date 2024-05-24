@@ -8,13 +8,13 @@ import com.example.onlinebookstore.model.Role;
 import com.example.onlinebookstore.model.ShoppingCart;
 import com.example.onlinebookstore.model.User;
 import com.example.onlinebookstore.repository.RoleRepository;
-import com.example.onlinebookstore.repository.ShoppingCartRepository;
 import com.example.onlinebookstore.repository.UserRepository;
 import java.util.Collections;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -23,9 +23,9 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
-    private final ShoppingCartRepository shoppingCartRepository;
 
     @Override
+    @Transactional
     public UserDto registerUser(UserRequestDto userRequestDto) throws RegistrationException {
         if (userRepository.findByEmail(userRequestDto.getEmail()).isPresent()) {
             throw new RegistrationException("Can't find register user");

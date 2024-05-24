@@ -23,7 +23,7 @@ import org.hibernate.annotations.SQLRestriction;
 
 @Getter
 @Setter
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude = "user")
 @ToString(exclude = "user")
 @NoArgsConstructor
 @SQLDelete(sql = "UPDATE shoppingCarts SET is_deleted = true WHERE id=?")

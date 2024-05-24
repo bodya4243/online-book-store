@@ -27,8 +27,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Entity
 @Getter
 @Setter
-@EqualsAndHashCode
-@ToString
+@EqualsAndHashCode(exclude = "shoppingCart")
+@ToString(exclude = "shoppingCart")
 @SQLDelete(sql = "UPDATE user SET is_deleted = true WHERE id=?")
 @SQLRestriction(value = "is_deleted = false")
 @Table(name = "users")

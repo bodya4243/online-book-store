@@ -1,5 +1,12 @@
 databaseChangeLog:
   - changeSet:
+      id: check-shoppingCart-table-exists
+      author: bodya4243
+      preConditions:
+        - onFail: HALT
+        - tableExists:
+            tableName: shopping_cart
+  - changeSet:
       id: insert-shoppingCart
       author: bodya4243
       changes:

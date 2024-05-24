@@ -1,6 +1,13 @@
 databaseChangeLog:
   - changeSet:
-      id: insert-cartItems
+      id: insert-cart_items
+      author: bodya4243
+      preConditions:
+        - onFail: HALT
+        - tableExists:
+            tableName: cart_items
+  - changeSet:
+      id: insert-cart_items_data
       author: bodya4243
       changes:
         - insert:

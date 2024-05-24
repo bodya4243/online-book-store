@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: insert_books_categories
+      id: insert-books_categories
       author: bodya4243
       changes:
         - insert:
