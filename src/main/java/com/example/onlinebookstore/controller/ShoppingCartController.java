@@ -8,6 +8,7 @@ import com.example.onlinebookstore.model.User;
 import com.example.onlinebookstore.service.ShoppingCartService;
 import com.example.onlinebookstore.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -44,7 +45,7 @@ public class ShoppingCartController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public CartItemResponseDto addBookToCart(@AuthenticationPrincipal User user,
-                                             @RequestBody CartItemDto request) {
+                                             @RequestBody @Valid CartItemDto request) {
         return shoppingCartService.addBookToCart(user, request.getBookId(), request.getQuantity());
     }
 
@@ -52,9 +53,10 @@ public class ShoppingCartController {
     @Operation(summary = "update item quantity", description = "Update item quantity")
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/cart-items/{cartItemId}")
-    public CartItemResponseDto updateCartItem(@PathVariable Long cartItemId,
-                                              @RequestBody CartItemUpdateQuantity request) {
-        return shoppingCartService.updateCartItem(cartItemId, request.getQuantity());
+    public CartItemResponseDto updateCartItem(@AuthenticationPrincipal User user,
+                                              @PathVariable Long cartItemId,
+                                              @RequestBody @Valid CartItemUpdateQuantity request) {
+        return shoppingCartService.updateCartItem(user, cartItemId, request.getQuantity());
     }
 
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
@@ -62,7 +64,7 @@ public class ShoppingCartController {
             description = "Delete item from shopping cart")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/cart-items/{cartItemId}")
-    public void removeCartItem(@PathVariable Long cartItemId) {
-        shoppingCartService.removeCartItem(cartItemId);
+    public void removeCartItem(@AuthenticationPrincipal User user, @PathVariable Long cartItemId) {
+        shoppingCartService.removeCartItem(user, cartItemId);
     }
 }
