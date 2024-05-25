@@ -1,0 +1,30 @@
+databaseChangeLog:
+  - changeSet:
+      id: precondition
+      author: bodya4243
+      preConditions:
+        - sqlCheck:
+            expectedResult: 1
+            sql: SELECT COUNT(*) FROM books WHERE title='Sample Book Title'
+  - changeSet:
+      id: insert-cart_items_data
+      author: bodya4243
+      changes:
+        - insert:
+            tableName: cart_items
+            columns:
+              - column:
+                  name: id
+                  value: 1
+              - column:
+                  name: shopping_cart_id
+                  value: 1
+              - column:
+                  name: book_id
+                  value: 1
+              - column:
+                  name: quantity
+                  value: 2
+              - column:
+                  name: book_id
+                  valueComputed: (SELECT id FROM books WHERE title='Sample Book Title')

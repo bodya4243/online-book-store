@@ -1,0 +1,24 @@
+databaseChangeLog:
+  - changeSet:
+      id: check-shoppingCart-table-exists
+      author: bodya4243
+      preConditions:
+        - onFail: HALT
+        - tableExists:
+            tableName: shopping_cart
+  - changeSet:
+      id: insert-shoppingCart
+      author: bodya4243
+      changes:
+        - insert:
+            tableName: shopping_cart
+            columns:
+              - column:
+                  name: id
+                  value: 1
+              - column:
+                  name: user_id
+                  value: 1
+              - column:
+                  name: is_deleted
+                  valueBoolean: false

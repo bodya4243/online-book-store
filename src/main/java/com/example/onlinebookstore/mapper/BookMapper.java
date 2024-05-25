@@ -6,6 +6,7 @@ import com.example.onlinebookstore.dto.BookRequestDto;
 import com.example.onlinebookstore.dto.BookResponseDto;
 import com.example.onlinebookstore.model.Book;
 import com.example.onlinebookstore.model.Category;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.mapstruct.AfterMapping;
@@ -36,6 +37,13 @@ public interface BookMapper {
         return categoryIds.stream()
                 .map(Category::new)
                 .collect(Collectors.toSet());
+    }
+
+    @Named("bookById")
+    default Book bookById(Long id) {
+        return Optional.ofNullable(id)
+                .map(Book::new)
+                .orElse(null);
     }
 
     BookDtoWithoutCategoryIds toDtoWithoutCategories(Book book);
