@@ -2,6 +2,7 @@ package com.example.onlinebookstore.service.order;
 
 import com.example.onlinebookstore.dto.order.OrderRequestDto;
 import com.example.onlinebookstore.dto.order.OrderResponseDto;
+import com.example.onlinebookstore.dto.order.OrderStatusRequestDto;
 import com.example.onlinebookstore.dto.orderitem.OrderItemResponseDto;
 import com.example.onlinebookstore.model.User;
 import java.util.List;
@@ -14,4 +15,8 @@ public interface OrderService {
     List<OrderItemResponseDto> getOrderItems(Long orderId);
 
     OrderItemResponseDto getOrderItem(Long orderId, Long itemId);
+
+    OrderResponseDto updateOrderStatus(Long orderId,
+                                       OrderStatusRequestDto orderStatusRequestDto,
+                                       User user);
 }

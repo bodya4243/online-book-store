@@ -20,11 +20,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
 @Data
-@EqualsAndHashCode(exclude = "orderItems")
+@EqualsAndHashCode(exclude = {"orderItems", "user"})
+@ToString(exclude = {"orderItems", "user"})
 @SQLDelete(sql = "UPDATE categories SET is_deleted = true WHERE id=?")
 @SQLRestriction(value = "is_deleted = false")
 @AllArgsConstructor
@@ -36,17 +39,18 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Status status;
+    @Column(name = "status", nullable = false)
+    private OrderStatus status;
 
     @Column(nullable = false)
     private BigDecimal total;
 
+    @CreationTimestamp
     @Column(nullable = false)
     private LocalDateTime orderDate;
 

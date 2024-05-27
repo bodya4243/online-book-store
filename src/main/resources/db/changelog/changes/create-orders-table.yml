@@ -22,7 +22,7 @@ databaseChangeLog:
                     referencedColumnNames: id
               - column:
                   name: status
-                  type: ENUM('DELIVERED','PENDING','COMPLETED', 'CANCELLED')
+                  type: ENUM('DELIVERED','PENDING','COMPLETED','CANCELLED')
                   constraints:
                     nullable: false
               - column:

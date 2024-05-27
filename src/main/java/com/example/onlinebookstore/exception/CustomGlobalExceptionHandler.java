@@ -68,6 +68,14 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
                 ex.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(OrderItemBadRequestException.class)
+    protected ResponseEntity<Object> handleOrderItemBadRequestException(
+            OrderItemBadRequestException ex) {
+        log.error("error message", ex);
+        return new ResponseEntity<>(getErrorBody(HttpStatus.BAD_REQUEST,
+                ex.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+
     private Map<String, Object> getErrorBody(HttpStatus status,
                                              Object errors) {
         Map<String, Object> body = new LinkedHashMap<>();
