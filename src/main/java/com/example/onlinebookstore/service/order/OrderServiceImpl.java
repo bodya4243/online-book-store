@@ -6,7 +6,7 @@ import com.example.onlinebookstore.dto.order.OrderStatusRequestDto;
 import com.example.onlinebookstore.dto.orderitem.OrderItemResponseDto;
 import com.example.onlinebookstore.exception.EntityNotFoundException;
 import com.example.onlinebookstore.exception.OrderItemBadRequestException;
-import com.example.onlinebookstore.mapper.CartItemToOrderItemMapper;
+import com.example.onlinebookstore.mapper.CartToOrderItemMapper;
 import com.example.onlinebookstore.mapper.OrderItemMapper;
 import com.example.onlinebookstore.mapper.OrderMapper;
 import com.example.onlinebookstore.model.Order;
@@ -31,7 +31,7 @@ public class OrderServiceImpl implements OrderService {
     private final ShoppingCartRepository shoppingCartRepository;
     private final OrderMapper orderMapper;
     private final OrderItemMapper orderItemMapper;
-    private final CartItemToOrderItemMapper createOrderItems;
+    private final CartToOrderItemMapper createOrderItems;
 
     @Override
     public OrderResponseDto placeOrder(OrderRequestDto orderRequestDto, User user) {
@@ -87,14 +87,13 @@ public class OrderServiceImpl implements OrderService {
             User user,
             OrderRequestDto orderRequestDto,
             ShoppingCart shoppingCart,
-            CartItemToOrderItemMapper createOrderItems) {
+            CartToOrderItemMapper createOrderItems) {
         Order order = new Order();
         order.setUser(user);
         order.setStatus(OrderStatus.PENDING);
         order.setShippingAddress(orderRequestDto.getShippingAddress());
         BigDecimal total = calculateTotal(shoppingCart);
         order.setTotal(total);
-        orderRepository.save(order);
         Set<OrderItem> orderItems = createOrderItems.toOrderItems(order,
                 shoppingCart.getCartItems());
         order.setOrderItems(orderItems);
