@@ -81,10 +81,8 @@ To get started with this project, follow these steps:
 
 
 4. **Access the application**:
-    - The application runs on `http://localhost:8080`.
-    - API documentation is available at `http://localhost:8080/swagger-ui.html`.
-
-
+   - The application runs on: http://localhost:8080.
+   - API documentation is available at: http://localhost:8080/swagger-ui.html.
 
 ### Docker Setup
 
@@ -94,93 +92,24 @@ To get started with this project, follow these steps:
 **Docker**:
    - You can download the container from Docker and start the API.
 
-*** docker-compose
-
-services:
-mysqldb:
-restart: always
-env_file: ./.env
-image: mysql:8.0
-environment:
-MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-MYSQL_DATABASE: ${MYSQL_DATABASE}
-MYSQL_USER: ${MYSQL_USER}
-MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-ports:
-- "3309:3306"
-volumes:
-- db_data:/var/lib/mysql
-healthcheck:
-test: [ "CMD-SHELL", "mysqladmin ping -h localhost -P ${DB_DOCKER_PORT} -u ${DB_USER} -p${DB_PASSWORD}" ]
-interval: 30s
-timeout: 10s
-retries: 3
-start_period: 60s
-
-app:
-depends_on:
-mysqldb:
-condition: service_healthy
-image: task-manager-api
-build: .
-env_file: ./.env
-ports:
-- "${SPRING_LOCAL_PORT}:${SPRING_DOCKER_PORT}"
-- "${DEBUG_PORT}:${DEBUG_PORT}"
-environment:
-SPRING_APPLICATION_JSON: '{
-"spring.datasource.url": "jdbc:mysql://mysqldb:${DB_DOCKER_PORT}/${DB_DATABASE}?serverTimezone=UTC",
-"spring.datasource.username": "${DB_USER}",
-"spring.datasource.password": "${DB_PASSWORD}",
-"jwt.secret": "${JWT_SECRET}"
-}'
-JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5000"
-
-volumes:
-db_data:
-
-*** Dockerfile
-
-# Builder stage
-FROM openjdk:21-jdk-slim as builder
-WORKDIR application
-ARG JAR_FILE=target/*.jar
-COPY ${JAR_FILE} application.jar
-RUN java -Djarmode=layertools -jar application.jar extract
-
-# Final stage
-FROM openjdk:21-jdk-slim
-WORKDIR application
-COPY --from=builder application/dependencies/ ./
-COPY --from=builder application/spring-boot-loader/ ./
-COPY --from=builder application/snapshot-dependencies/ ./
-COPY --from=builder application/application/ ./
-ENTRYPOINT ["java", "org.springframework.boot.loader.launch.JarLauncher"]
-EXPOSE 8080
-
-*** env file
-
 # MySQL environment variables
-DB_PASSWORD=123sqlbod321
-DB_DATABASE=book_store_db
-DB_USER=bodya
-DB_LOCAL_PORT=3309
-DB_DOCKER_PORT=3306
+```
+   DB_PASSWORD=123sqlbod321
+   DB_DATABASE=book_store_db
+   DB_USER=bodya
+   DB_LOCAL_PORT=3309
+   DB_DOCKER_PORT=3306
 
-# Spring Boot application environment variables
-SPRING_LOCAL_PORT=8080
-SPRING_DOCKER_PORT=8080
+   SPRING_LOCAL_PORT=8080
+   SPRING_DOCKER_PORT=8080
+   DEBUG_PORT=5005
 
-# Debug port
-DEBUG_PORT=5005
-
-# JWT secret key
-JWT_SECRET=wefwqfdfwqfq4f3fq3af43453452ef34fewfewfe
-
-MYSQL_DATABASE=book_store_db
-MYSQL_USER=bodya
-MYSQL_PASSWORD=123sqlbod321
-
+   JWT_SECRET=wefwqfdfwqfq4f3fq3af43453452ef34fewfewfe
+   
+   MYSQL_DATABASE=book_store_db
+   MYSQL_USER=bodya
+   MYSQL_PASSWORD=123sqlbod321
+```
 
 1. **Build the Docker image**:
     ```sh
@@ -197,47 +126,58 @@ MYSQL_PASSWORD=123sqlbod321
 
 4. **Authentication and Usage Guide**
 
-How It Works
-The application uses JWT (JSON Web Token) for authentication and authorization. When a user logs in, they receive a JWT token, which must be included in the Authorization header of subsequent requests to access protected endpoints.
+* How It Works
+The application uses JWT (JSON Web Token) for authentication and authorization.
+When a user logs in, they receive a JWT token,
+which must be included in the Authorization header of subsequent requests to access protected endpoints.
 
-User Registration
+* User Registration
 To register a new user, send a POST request to /api/auth/registration with the following JSON payload:
 
-json
-{
-   "email": "tom.doe@example.com",
-   "password": "securePassword123",
-   "repeatPassword": "securePassword123",
-   "firstName": "alice",
-   "lastName": "Doe",
-   "shippingAddress": "Kyiv, Shevchenko ave, 1"
-}
+```
+   json
+   {
+      "email": "tom.doe@example.com",
+      "password": "securePassword123",
+      "repeatPassword": "securePassword123",
+      "firstName": "alice",
+      "lastName": "Doe",
+      "shippingAddress": "Kyiv, Shevchenko ave, 1"
+   }
+```
 
-User Login
+* User Login
    To login and receive a JWT token, send a POST request to /api/auth/login with the following JSON payload:
 
-json
-{
-   Username: bob@example.com
-   Password: secure123
-}
-The response will include a JWT token:
+```
+   json
+   {
+      Username: bob@example.com
+      Password: secure123
+   }
+```
 
-json
-{
-   "token": "your-jwt-token"
-}
-Admin Login
+* The response will include a JWT token:
+
+```
+   json
+   {
+      "token": "your-jwt-token"
+   }
+```
+
+* Admin Login
 Use the following admin credentials to log in and test admin-only endpoints:
 
-Username: bob@example.com
-Password: secure123
+Username: `bob@example.com`
+Password: `secure123`
 
-Using the JWT Token
+* Using the JWT Token
 Include the JWT token in the Authorization header of your requests:
 
-Authorization: Bearer your-jwt-token
 
+* Authorization: Bearer your-jwt-token
+   
 ## Postman Collection
 
 A collection of Postman requests has been created to help you test the APIs quickly. You can import the collection into Postman by following these steps:
