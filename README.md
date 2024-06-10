@@ -6,8 +6,6 @@ Welcome to the "Online Book Store" repository! This project was inspired by the 
 
 ## Technologies Used
 
-This project leverages a variety of modern technologies and tools to ensure a seamless and efficient experience:
-
 - **Spring Boot**: For creating a stand-alone, production-grade Spring-based application.
 - **Spring Security**: To handle authentication and authorization.
 - **Spring Data JPA**: For simplified data access and management.
@@ -64,22 +62,7 @@ To get started with this project, follow these steps:
     ```sh
     mvn spring-boot:run
     ```
-   Technologies and Tools
-   Key Technologies
-   Java Development Kit (JDK) 17
-   Maven
-   MySQL
-   Spring Boot
-   H2 Database (for testing)
-   Lombok
-   MapStruct
-   Liquibase
-   SpringDoc OpenAPI
-   JWT (JSON Web Token)
-   Docker Compose
    
-
-
 4. **Access the application**:
    - The application runs on: http://localhost:8080.
    - API documentation is available at: http://localhost:8080/swagger-ui.html.
@@ -92,28 +75,33 @@ To get started with this project, follow these steps:
 **Docker**:
    - You can download the container from Docker and start the API.
 
-# MySQL environment variables
+### environment variables
 ```
-   DB_PASSWORD=123sqlbod321
-   DB_DATABASE=book_store_db
-   DB_USER=bodya
+   # MySQL environment variables
+   DB_PASSWORD=<your-db-password>
+   DB_DATABASE=<your-db-name>
+   DB_USER=<your-db-username>
    DB_LOCAL_PORT=3309
    DB_DOCKER_PORT=3306
-
+   
+   # Spring Boot application environment variables
    SPRING_LOCAL_PORT=8080
    SPRING_DOCKER_PORT=8080
-   DEBUG_PORT=5005
-
-   JWT_SECRET=wefwqfdfwqfq4f3fq3af43453452ef34fewfewfe
    
-   MYSQL_DATABASE=book_store_db
-   MYSQL_USER=bodya
-   MYSQL_PASSWORD=123sqlbod321
+   # Debug port
+   DEBUG_PORT=5005
+   
+   # JWT secret key
+   JWT_SECRET=<your-jwt-secret>
+   
+   MYSQL_DATABASE=<your-db-name>
+   MYSQL_USER=<your-db-username>
+   MYSQL_PASSWORD=<your-db-password>
 ```
 
 1. **Build the Docker image**:
     ```sh
-    docker build -t online-book-store .
+    docker-compose up --build -d
     ```
 
 2. **Run the Docker container**:
@@ -124,7 +112,10 @@ To get started with this project, follow these steps:
 3. **Verify the container is running**:
     - Ensure the application is accessible at `http://localhost:8080`.
 
-4. **Authentication and Usage Guide**
+4. **Stopping the Services**:
+   ```sh
+    docker docker-compose down
+    ```
 
 * How It Works
 The application uses JWT (JSON Web Token) for authentication and authorization.
@@ -132,10 +123,9 @@ When a user logs in, they receive a JWT token,
 which must be included in the Authorization header of subsequent requests to access protected endpoints.
 
 * User Registration
-To register a new user, send a POST request to /api/auth/registration with the following JSON payload:
+To register a new user, send a request to `POST /api/auth/registration` with the following JSON payload:
 
-```
-   json
+```json
    {
       "email": "tom.doe@example.com",
       "password": "securePassword123",
@@ -147,20 +137,18 @@ To register a new user, send a POST request to /api/auth/registration with the f
 ```
 
 * User Login
-   To login and receive a JWT token, send a POST request to /api/auth/login with the following JSON payload:
+  To login and receive a JWT token, send a `POST request to /api/auth/login` with the following JSON payload:
 
-```
-   json
+```json
    {
-      Username: bob@example.com
-      Password: secure123
+      "Username": "bob@example.com",
+      "Password": "secure123"
    }
 ```
 
 * The response will include a JWT token:
 
-```
-   json
+```json
    {
       "token": "your-jwt-token"
    }
@@ -172,11 +160,7 @@ Use the following admin credentials to log in and test admin-only endpoints:
 Username: `bob@example.com`
 Password: `secure123`
 
-* Using the JWT Token
-Include the JWT token in the Authorization header of your requests:
-
-
-* Authorization: Bearer your-jwt-token
+* Include the JWT token in the Authorization header of your requests: `Authorization: Bearer your-jwt-token`
    
 ## Postman Collection
 
@@ -207,3 +191,5 @@ Thank you for taking the time to review this project. If you have any questions 
 Happy coding!
 
 Bohdan Bohush
+
+[linkedin](http://www.linkedin.com/in/bohdan-bohush-a2936b301)
