@@ -101,21 +101,16 @@ To get started with this project, follow these steps:
 
 1. **Build the Docker image**:
     ```sh
-    docker-compose up --build -d
+    docker-compose up --build
     ```
-
-2. **Run the Docker container**:
-    ```sh
-    docker run -d -p 8080:8080 online-book-store
-    ```
-
-3. **Verify the container is running**:
+   
+2.**Verify the container is running**:
     - Ensure the application is accessible at `http://localhost:8080`.
 
-4. **Stopping the Services**:
+3.**Stopping the Services**:
    ```sh
-    docker docker-compose down
-    ```
+  docker-compose down
+  ```
 
 * How It Works
 The application uses JWT (JSON Web Token) for authentication and authorization.
