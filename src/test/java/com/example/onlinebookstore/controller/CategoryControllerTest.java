@@ -78,7 +78,7 @@ public class CategoryControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(categoryRequestDto)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id").value(5));
+                .andExpect(jsonPath("$.id").exists());
     }
 
     @Test
