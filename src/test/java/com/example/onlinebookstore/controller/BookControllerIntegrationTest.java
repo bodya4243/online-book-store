@@ -10,7 +10,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.example.onlinebookstore.dto.BookRequestDto;
 import com.example.onlinebookstore.dto.BookResponseDto;
-import com.example.onlinebookstore.service.BookService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;
@@ -20,42 +19,57 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import org.testcontainers.containers.MySQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
-@ExtendWith(MockitoExtension.class)
+@Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class BookControllerTest {
+@Sql(scripts = "/clean-up.sql", executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
+@Sql(scripts = "/set-up.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+public class BookControllerIntegrationTest {
+
+    @Container
+    private static MySQLContainer mysql = new MySQLContainer()
+            .withUsername("user")
+            .withPassword("password")
+            .withDatabaseName("testdb");
 
     @Autowired
     private static MockMvc mockMvc;
 
-    @Mock
-    private BookService bookService;
+    @Autowired
+    private WebApplicationContext webApplicationContext;
 
     @Autowired
     private ObjectMapper objectMapper;
-
-    @InjectMocks
-    private BookController bookController;
 
     private BookRequestDto bookRequestDto;
 
     private BookResponseDto bookResponseDto;
 
+    @DynamicPropertySource
+    static void configureProperties(DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.url", mysql::getJdbcUrl);
+        registry.add("spring.datasource.username", mysql::getUsername);
+        registry.add("spring.datasource.password", mysql::getPassword);
+    }
+
     @BeforeAll
-    static void beforeAll(@Autowired WebApplicationContext applicationContext) {
+    static void beforeAll(@Autowired WebApplicationContext context) {
         mockMvc = MockMvcBuilders
-                .webAppContextSetup(applicationContext)
+                .webAppContextSetup(context)
                 .apply(springSecurity())
                 .build();
     }
@@ -72,7 +86,6 @@ public class BookControllerTest {
         bookRequestDto.setCoverImage("http://example.com/cover3.jpg");
 
         bookResponseDto = new BookResponseDto();
-        bookResponseDto.setId(1L);
         bookResponseDto.setTitle(bookRequestDto.getTitle());
         bookResponseDto.setAuthor(bookRequestDto.getAuthor());
         bookResponseDto.setPrice(bookRequestDto.getPrice());
@@ -84,7 +97,7 @@ public class BookControllerTest {
 
     @WithMockUser(username = "user", roles = {"ADMIN"})
     @Test
-    public void testGetAllBooks() throws Exception {
+    public void getAllBooks_ReturnsPageOfBooks_WhenExist() throws Exception {
         // When
         String result = mockMvc.perform(get("/books").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -93,9 +106,7 @@ public class BookControllerTest {
                 .getContentAsString();
 
         // Then
-        List<BookResponseDto> actual = objectMapper.readValue(result,
-                new TypeReference<>() {
-                });
+        List<BookResponseDto> actual = objectMapper.readValue(result, new TypeReference<>() {});
 
         // Verify
         assertNotNull(actual);
@@ -104,15 +115,14 @@ public class BookControllerTest {
 
     @WithMockUser(roles = {"ADMIN"})
     @Test
-    public void testCreateBook() throws Exception {
+    public void createBook_CreatesNewBook_WhenRequestIsValid() throws Exception {
         // Given
         String jsonRequest = objectMapper.writeValueAsString(bookRequestDto);
 
         // When
         String result = mockMvc.perform(post("/books")
                         .content(jsonRequest)
-                        .contentType(MediaType.APPLICATION_JSON)
-                )
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andReturn().getResponse().getContentAsString();
 

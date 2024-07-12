@@ -15,6 +15,7 @@ import com.example.onlinebookstore.mapper.BookMapper;
 import com.example.onlinebookstore.model.Book;
 import com.example.onlinebookstore.model.Category;
 import com.example.onlinebookstore.repository.BookRepository;
+import com.example.onlinebookstore.repository.CategoryRepository;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -36,6 +37,9 @@ import org.springframework.data.domain.Pageable;
 class BookServiceImplTest {
     @Mock
     private BookRepository bookRepository;
+
+    @Mock
+    private CategoryRepository categoryRepository;
 
     @Mock
     private BookMapper bookMapper;
@@ -71,7 +75,7 @@ class BookServiceImplTest {
         book.setCoverImage("new coverImage");
 
         Set<Category> bookCategories = new HashSet<>();
-        bookCategories.add(new Category(1L)); // Assume Category has a constructor with id
+        bookCategories.add(new Category(1L));
         bookCategories.add(new Category(2L));
         book.setCategoryId(bookCategories);
 
@@ -173,12 +177,12 @@ class BookServiceImplTest {
         Long categoryId = 1L;
 
         List<Book> books = new ArrayList<>();
-        books.add(new Book());
-        books.add(new Book());
+        books.add(book);
 
-        // When
+        when(categoryRepository.existsById(categoryId)).thenReturn(true);
         when(bookRepository.findAllByCategoryId(categoryId)).thenReturn(books);
 
+        // When
         List<BookDtoWithoutCategoryIds> expectedDtos = books.stream()
                 .map(bookMapper::toDtoWithoutCategories)
                 .toList();
@@ -190,5 +194,27 @@ class BookServiceImplTest {
         for (int i = 0; i < expectedDtos.size(); i++) {
             assertEquals(expectedDtos.get(i), foundDtos.get(i));
         }
+    }
+
+    @Test
+    void getById_NonExistentId() {
+        Long nonExistentId = 999L;
+
+        EntityNotFoundException actual = assertThrows(EntityNotFoundException.class,
+                () -> bookService.getById(nonExistentId));
+
+        assertEquals("Can't get book by id" + nonExistentId, actual.getMessage());
+    }
+
+    @Test
+    void getBooksByNonExistentCategoryId() {
+        Long nonExistentCategoryId = 999L;
+
+        when(categoryRepository.existsById(nonExistentCategoryId)).thenReturn(false);
+
+        EntityNotFoundException actual = assertThrows(EntityNotFoundException.class,
+                () -> bookService.getBooksByCategoryId(nonExistentCategoryId));
+
+        assertEquals("Can`t find a book with id: " + nonExistentCategoryId, actual.getMessage());
     }
 }
