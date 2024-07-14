@@ -173,6 +173,27 @@ Throughout the development of this project, several challenges were encountered 
 - **Data Persistence**: Ensuring seamless data operations with Spring Data JPA required understanding and implementing the correct JPA annotations and query methods.
 - **API Documentation**: Integrating Swagger for API documentation and testing provided clarity and ease of use for developers interacting with the APIs.
 
+## Tests
+### Category Tests
+CategoryControllerTests
+Test cases for CategoryController to ensure it handles requests correctly.
+
+CategoryServiceTests
+Test cases for CategoryService to verify the business logic related to category management.
+
+CategoryRepositoryTests
+Test cases for CategoryRepository to confirm CRUD operations on category entities.
+
+### Book Tests
+BookControllerTests
+Test cases for BookController to ensure it handles book-related requests properly.
+
+BookServiceTests
+Test cases for BookService to verify the business logic related to book management.
+
+BookRepositoryTests
+Test cases for BookRepository to confirm CRUD operations on book entities.
+
 ## Conclusion
 
 This project not only demonstrates the practical application of various Spring technologies but also showcases the ability to develop a full-fledged application from scratch. The detailed documentation, robust functionality, and thoughtful design aim to provide a valuable resource for both developers and users.
